@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/static/js/jquery-3.3.1.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<form action="" class="f1">
+    {% csrf_token %}
+    <p>用户</p><input name="user" type="text">
+    <p>密码</p><input name="pwd" type="text">
+</form>
+<p class="sp"></p>
+<button class="btn">登录</button>
+<a href="/register/">注册</a>
+</body>
+<script>
+    $(".btn").on("click", function () {
+        $.ajax({
+            url: "/login/",
+            type: "POST",
+            headers: {"X-CSRFToken": $("[name='csrfmiddlewaretoken']").val()},
+            data: $(".f1").serialize(),
+            success:function (data) {
+                console.log(data);
+                if (data["stutas"]){
+                    alert("登录成功")
+                }
+                else{
+                    $(".sp").html(data["msg"]);
+                    setTimeout(function () {
+                        $(".sp").html("")
+                    },1000)
+                }
+
+            }
+
+        })
+    })
+</script>
+</html>
